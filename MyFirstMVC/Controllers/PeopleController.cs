@@ -1,10 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyFirstMVC.Data;
 using MyFirstMVC.Models;
+using MyFirstMVC.Models.Entities;
 
 namespace MyFirstMVC.Controllers
 {
     public class PeopleController : Controller
     {
+        private FirstContext dbCon;
+
+        public PeopleController(FirstContext dbCon)
+        {
+            this.dbCon = dbCon;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -12,27 +21,24 @@ namespace MyFirstMVC.Controllers
 
         public IActionResult ShowPeople()
         {
-            List<PersonViewModel> listOfPeople = new List<PersonViewModel>();
-
-            PersonViewModel firstPerson = new PersonViewModel();
-            firstPerson.FirstName = "Boban";
-            firstPerson.LastName = "Srezovski";
-
-            listOfPeople.Add(firstPerson);
-
-            PersonViewModel secondPerson = new PersonViewModel();
-            secondPerson.FirstName = "Goran";
-            secondPerson.LastName = "Nikolovski";
-
-            listOfPeople.Add(secondPerson);
-
-            PersonViewModel thirdPerson = new PersonViewModel();
-            thirdPerson.FirstName = "Angela";
-            thirdPerson.LastName = "Atanasovska";
-
-            listOfPeople.Add(thirdPerson);
+            IEnumerable<Person> listOfPeople = dbCon.People;
 
             return View(listOfPeople);
+        }
+
+        [HttpGet]
+        public IActionResult CreatePerson()
+        {
+            return View(new Person());
+        }
+
+        [HttpPost]
+        public IActionResult CreatePerson(Person person)
+        {
+            dbCon.People.Add(person);
+            dbCon.SaveChanges();
+
+            return View("ShowPeople", dbCon.People);
         }
     }
 }

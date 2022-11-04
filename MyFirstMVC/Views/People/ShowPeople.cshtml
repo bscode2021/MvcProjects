@@ -1,23 +1,30 @@
-﻿@model IEnumerable<PersonViewModel> 
+﻿@using MyFirstMVC.Models.Entities
+@model IEnumerable<Person>
 
 <h2 class="text-center mt-3">List of people</h2>
 
+  <a class="btn btn-info btn-lg" asp-area="" asp-controller="People" asp-action="CreatePerson">Create person</a>
+
 <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-    </tr>
-  </thead>
-  <tbody>
-        @foreach (PersonViewModel item in Model)
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Address</th>
+            <th scope="col">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Person item in Model)
         {
             <tr>
-                <th scope="row">1</th>
+                <th scope="row">@item.PersonID</th>
                 <td>@item.FirstName</td>
                 <td>@item.LastName</td>
+                <td>@item.Address</td>
+                <td>@item.Email</td>
             </tr>
         }
-  </tbody>
+    </tbody>
 </table>
