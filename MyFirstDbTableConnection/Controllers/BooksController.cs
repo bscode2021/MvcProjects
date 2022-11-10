@@ -21,6 +21,7 @@ namespace MyFirstDbTableConnection.Controllers
             List<BookViewModel> listOfBooksWithCategories = new List<BookViewModel>();
 
             List<Book> books = context.Books.ToList();
+
             foreach (Book book in books)
             {
                 List<BookCategories> bookCategories = context.BookCategories.Where(bc => bc.BookID == book.BookID).ToList();
@@ -29,9 +30,16 @@ namespace MyFirstDbTableConnection.Controllers
                       where BookCategories.BookID == book.BookID
                       select BookCategories).ToList();
 
-                List <Category> listOfCategories = context.Categories.ToList();
+                List <Category> listOfCategories = new List<Category>();
+
+                foreach (BookCategories bookCategory in bookCategories)
+                {
+                    listOfCategories.Add(context.Categories.FirstOrDefault(c => c.CategoryID == bookCategory.CategoryID));
+                }
+
                 listOfBooksWithCategories.Add(new BookViewModel(book, listOfCategories));
             }
+
             return View(listOfBooksWithCategories);
         }
 
