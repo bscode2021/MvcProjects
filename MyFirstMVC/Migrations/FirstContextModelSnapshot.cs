@@ -53,6 +53,57 @@ namespace MyFirstMVC.Migrations
 
                     b.ToTable("Person");
                 });
+
+            modelBuilder.Entity("MyFirstMVC.Models.Entities.PersonDetails", b =>
+                {
+                    b.Property<int>("DetailsID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetailsID"), 1L, 1);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Education")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EducationLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PictureURl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkPosition")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DetailsID");
+
+                    b.HasIndex("PersonID");
+
+                    b.ToTable("PersonDetails");
+                });
+
+            modelBuilder.Entity("MyFirstMVC.Models.Entities.PersonDetails", b =>
+                {
+                    b.HasOne("MyFirstMVC.Models.Entities.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+                });
 #pragma warning restore 612, 618
         }
     }

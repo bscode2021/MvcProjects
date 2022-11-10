@@ -38,7 +38,7 @@ namespace MyFirstMVC.Controllers
             dbCon.People.Add(person);
             dbCon.SaveChanges();
 
-            return View("ShowPeople", dbCon.People);
+            return RedirectToAction(nameof(ShowPeople));
         }
     }
 }

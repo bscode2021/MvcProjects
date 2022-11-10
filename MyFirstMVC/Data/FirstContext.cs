@@ -11,5 +11,6 @@ namespace MyFirstMVC.Data
         }
 
         public DbSet<Person> People { get; set; }
+        public DbSet<PersonDetails> PersonDetails { get; set; }
     }
 }
