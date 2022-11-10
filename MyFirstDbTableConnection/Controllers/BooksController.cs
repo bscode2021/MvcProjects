@@ -40,6 +40,44 @@ namespace MyFirstDbTableConnection.Controllers
                 listOfBooksWithCategories.Add(new BookViewModel(book, listOfCategories));
             }
 
+            // Query sintax join
+            List <BookViewModel> newListOfBookModel = 
+                (
+                from book in context.Books
+                join bc in context.BookCategories
+                on book.BookID equals bc.BookID
+                select new BookViewModel ()
+                {
+                    Book = book,
+                    Categories = context.Categories.Where(c => c.CategoryID == bc.CategoryID).ToList(),
+                }
+                ).ToList();
+
+            // Method sintax join
+
+            List<BookViewModel> newListOfBookModel1 = context.Books
+                .Join(context.BookCategories,
+                book => book.BookID,
+                bc => bc.BookID,
+                (book, bc) => new BookViewModel
+                {
+                    Book = book,
+                    Categories = context.Categories.Where(c => c.CategoryID == bc.CategoryID).ToList()
+                }).ToList();
+
+
+            //var person = db.People
+            //  .Join(db.EmailAddresses,
+            //        p => p.BusinessEntityID,
+            //        e => e.BusinessEntityID,
+            //        (p, e) => new {
+            //            FirstName = p.FirstName,
+            //            MiddleName = p.MiddleName,
+            //            LastName = p.LastName,
+            //            EmailID = e.EmailAddress1
+            //        }
+            //        ).Take(5);
+
             return View(listOfBooksWithCategories);
         }
 
